@@ -8,17 +8,17 @@ services:
 #    
 #
     sugarserver:
-        class: arno\sugarRESTBundle\SugarREST\SugarRESTServer
+        class: NeoArno\sugarRESTBundle\SugarREST\SugarRESTServer
         arguments: [@sugarcall]
 
     sugaruser:
-        class: arno\sugarRESTBundle\SugarREST\SugarRESTUser
+        class: NeoArno\sugarRESTBundle\SugarREST\SugarRESTUser
         arguments: [@sugarcall]
 
     sugarbean:
-        class: arno\sugarRESTBundle\SugarREST\SugarRESTBean
+        class: NeoArno\sugarRESTBundle\SugarREST\SugarRESTBean
         arguments: [@sugarcall]
 
     sugarcall:
-        class: arno\sugarRESTBundle\SugarREST\SugarRESTCall
+        class: NeoArno\sugarRESTBundle\SugarREST\SugarRESTCall
         arguments: [@api_caller, %rest_url%, %api_version%]

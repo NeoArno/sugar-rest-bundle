@@ -1,6 +1,6 @@
 <?php
 
-namespace neo-arno\sugarRESTBundle;
+namespace NeoArno\sugarRESTBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
