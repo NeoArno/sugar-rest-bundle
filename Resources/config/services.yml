@@ -1,0 +1,24 @@
+parameters:
+#    
+#
+    rest_url: "http://<your-sugarcrm-instance-url>/service/v4_1/rest.php"
+    api_version: "4.1"
+
+services:
+#    
+#
+    sugarserver:
+        class: arno\sugarRESTBundle\SugarREST\SugarRESTServer
+        arguments: [@sugarcall]
+
+    sugaruser:
+        class: arno\sugarRESTBundle\SugarREST\SugarRESTUser
+        arguments: [@sugarcall]
+
+    sugarbean:
+        class: arno\sugarRESTBundle\SugarREST\SugarRESTBean
+        arguments: [@sugarcall]
+
+    sugarcall:
+        class: arno\sugarRESTBundle\SugarREST\SugarRESTCall
+        arguments: [@api_caller, %rest_url%, %api_version%]

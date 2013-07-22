@@ -1,0 +1,27 @@
+{
+    "name": "NeoArno/sugarRESTBundle",
+    "type": "symfony-bundle",
+    "description": "A Symfony2 bundle for the access SugarCRM REST API",
+    "keywords": [ "sugarcrm", "crm", "rest" ],
+    "homepage": "https://github.com/NeoArno/sugarRESTBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "NeoArno",
+            "email": "me@neoarno.com",
+            "homepage": "http://blog.neoarno.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "Lsw/ApiCallerBundle": "*"
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-0": {
+            "NeoArno\\sugarRESTBundle": ""
+        }
+    },
+    "target-dir": "NeoArno/sugarRESTBundle"
+}
