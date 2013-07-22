@@ -11,10 +11,6 @@ web/bundles/*
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
-<<<<<<< HEAD
 /nbproject/private
-=======
-/nbproject/private/
->>>>>>> modify .gitignore
 /nbproject/project.properties
 /nbproject/project.xml
