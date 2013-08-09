@@ -15,15 +15,12 @@ class SugarRESTResult
 
     private $rest_result ;
     
-    public function __construct($result_array) {
+    public function __construct($result_array = NULL) {
         
         $this->result_array = $result_array ;
         
         if ($result_array == null) {
-            $this->session_id = "";
-            $this->error_description = "REST : no return from server";
-            $this->error_name = "REST : no return from server";
-            $this->error_nb = -1;
+            $this->setError(-1, "REST : no return from server", "REST : no return from server");
         } else {
 
             if (!empty($result_array->number))
@@ -52,7 +49,19 @@ class SugarRESTResult
                 $this->rest_result = array();
         }
     }
-  
+
+    public function setError($code, $message, $description) {
+        
+        $this->error_nb = $code;
+        $this->error_name = $message ;
+        $this->error_description = $description ;
+        
+        $this->result_array = NULL;
+        $this->rest_result = NULL ;
+    }
+
+
+    
     public function isError() {
         if ($this->error_nb == 0) {
             return(false) ;
@@ -82,8 +91,12 @@ class SugarRESTResult
     }
     
     public function getResultArray() {
-        $local_result = $this->result_array ;
-        return $this->Object2Array($local_result) ;
+        if (is_object($this->result_array)) {
+            $local_result = $this->result_array ;
+            return $this->Object2Array($local_result) ;
+        } else {
+            return (array(0 => $this->result_array));
+        }
     }
     
     private function Object2Array($the_object) {

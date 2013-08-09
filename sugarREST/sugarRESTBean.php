@@ -14,9 +14,17 @@ class SugarRESTBean
         $this->rest_call = $rest_call ;
     }
 
-    //
     // GetEntry
     // Get specific entry Data based on an ID
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
+    //      $obj_id - String - The SugarBean's ID value.
+    //      $fields_list - Array - A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
+    //      $link_name_to_fields_array - Array - A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
+    //      $trackView - Boolean - Should we track the record accessed
+    // return result object 
+    //      return an array of each fields, values and relationships list
     //
     public function GetEntry($sessionID, $module_name, $obj_id, $fields_list = array(), $link_name_to_fields_array = array(), $track_view = FALSE) {
 
@@ -39,6 +47,14 @@ class SugarRESTBean
     //
     // SetEntry
     // Update or create a single SugarBean
+    // 
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
+    //      $name_value_list - Array - The keys of the array are the SugarBean attributes, the values of the array are the values the attributes should have.
+    //      $trackView - Boolean - Should we track the record accessed
+    // return result object 
+    //      the ID of the bean that was written to (-1 on error)
     //
     public function SetEntry($sessionID, $module_name, $name_value_list = array(), $track_view = FALSE) {
 
@@ -56,9 +72,16 @@ class SugarRESTBean
         
     }
 
-    //
     // GetEntries
-    // Get specific entries Data based on an array of IDs
+    // Get specific entry Data based on an array of IDs
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
+    //      $IDs_array - Array - The SugarBeans' IDs array.
+    //      $fields_list - Array - A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
+    //      $link_name_to_fields_array - Array - A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
+    // return result object 
+    //      return an array of each fields, values and relationships list
     //
     public function GetEntries($sessionID, $module_name, $IDs_array, $fields_list = array(), $link_name_to_fields_array = array()) {
 
@@ -80,6 +103,13 @@ class SugarRESTBean
     //
     // GetEntriesCount
     // Retrieve number of records in a given module
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
+    //      $query - String - SQL where clause without the word 'where'
+    //      $deleted - Boolean - specify whether or not to include deleted records
+    // return result object 
+    //      result_count - integer - Total number of records for a given module and query
     //
     public function GetEntriesCount($sessionID, $module_name, $query = "", $deleted = false) {
 
@@ -100,7 +130,12 @@ class SugarRESTBean
     //
     // SetEntries
     // Update or create a list of SugarBeans
-    //
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
+    //      $name_value_list - Array - Array of Bean specific Arrays where the keys of the array are the SugarBean attributes, the values of the array are the values the attributes should have.
+    // return result object 
+    //      'ids' -- Array of the IDs of the beans that was written to (-1 on error)
     public function SetEntries($sessionID, $module_name, $name_value_lists = array()) {
 
         $entry_parameters = array(
@@ -119,6 +154,21 @@ class SugarRESTBean
     //
     // GetListEntries
     // Retrieve a list of Beans answer to a specific request
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
+    //      $query - String - SQL where clause without the word 'where'
+    //      $order_by - String - SQL order by clause without the phrase 'order by'
+    //      $offset - Integer - The record offset to start from
+    //      $fields_list - Array - A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
+    //      $link_name_to_fields_array - Array - A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
+    //      $max_results - Integer - The maximum number of records to return.  The default is the sugar configuration value for 'list_max_entries_per_page'
+    //      $deleted - Boolean - false if deleted records should not be include, true if deleted records should be included
+    // return result object 
+    //      'result_count' -- integer - The number of records returned
+    //      'next_offset' -- integer - The start of the next page (This will always be the previous offset plus the number of rows returned.  It does not indicate if there is additional data unless you calculate that the next_offset happens to be closer than it should be.
+    //      'entry_list' -- Array - The records that were retrieved
+    //	    'relationship_list' -- Array - The records link field data. The example is if asked about accounts email address then return data would look like Array ( [0] => Array ( [name] => email_addresses [records] => Array ( [0] => Array ( [0] => Array ( [name] => id [value] => 3fb16797-8d90-0a94-ac12-490b63a6be67 ) [1] => Array ( [name] => email_address [value] => hr.kid.qa@example.com ) [2] => Array ( [name] => opt_out [value] => 0 ) [3] => Array ( [name] => primary_address [value] => 1 ) ) [1] => Array ( [0] => Array ( [name] => id [value] => 403f8da1-214b-6a88-9cef-490b63d43566 ) [1] => Array ( [name] => email_address [value] => kid.hr@example.name ) [2] => Array ( [name] => opt_out [value] => 0 ) [3] => Array ( [name] => primary_address [value] => 0 ) ) ) ) )
     //
     public function GetListEntries($sessionID, $module_name, $query = "", $order_by = "", $offset = 0, $fields_list = array(), $link_name_to_fields_array = array(), $max_results = "10", $deleted = 0, $favorites = false) {
 
@@ -146,6 +196,18 @@ class SugarRESTBean
     // SearchbyModule
     // Given a list of modules to search and a search string, return the id, module_name, along with the fields
     // We will support Accounts, Bug Tracker, Cases, Contacts, Leads, Opportunities, Project, ProjectTask, Quotes
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $search_string - String - string to search
+    //      $modules - Array - array of modules to query
+    //      $offset - Integer - The record offset to start from
+    //      $max_results - Integer - The maximum number of records to return.  The default is the sugar configuration value for 'list_max_entries_per_page'
+    //      $assigned_user_id - String - a user id to filter all records by, leave empty to exclude the filter
+    //      $select_fields - Array - An array of fields to return.  If empty the default return fields will be from the active list view defs
+    //      $unified_search_only - Boolean - A boolean indicating if we should only search against those modules participating in the unified search
+    //      $favorites - Boolean - A boolean indicating if we should only search against records marked as favorites.
+    // return result object
+    //      return array of return_search_result
     //
     public function SearchbyModule($sessionID, $search_string, $modules = array(), $offset = 0, $max_results = "10", $assigned_user_id = "", $select_fields = array(), $unified_search_only = false,   $favorites = false) {
 
@@ -171,6 +233,21 @@ class SugarRESTBean
     //
     // GetRelationships
     // retrieve a collection of beans that are related to the specified bean and, optionnally, returns relationship data
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module that the primary record is from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
+    //      $module_id - String - The ID of the bean in the specified module
+    //      $link_field_name - String - The name of the link field to return records from.  This name should be the name of the relationship.
+    //      $related_module_query - String - A portion of the where clause of the SQL statement to find the related items.  The SQL query will already be filtered to only include the beans that are related to the specified bean.
+    //      $related_fields - Array - Array of related bean fields to be returned.
+    //      $related_module_link_name_to_fields_array - Array - For every related bean returrned, specify link fields name to fields info for that bean to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address'))).
+    //      $deleted - Boolean - false if deleted records should not be include, true if deleted records should be included
+    //      $order_by - String - SQL order by clause without the phrase 'order by'
+    //      $offset - Integer - The record offset to start from
+    //      $limit - Integer - number of results to return (defaults to all)    
+    // return result object
+    //      'entry_list' -- Array - The records that were retrieved
+    //      'relationship_list' -- Array - The records link field data.
     //
     public function GetRelationships($sessionID, $module_name, $module_id, $link_field_name, $related_module_query, $related_fields = array(), $related_module_link_name_to_fields_array = array(), $deleted = 0, $order_by = "", $offset = 0, $limit = 0) {
 
@@ -236,6 +313,18 @@ class SugarRESTBean
     //
     // SetRelationship
     // Sets a single relationship between two SugarBeans 
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_name - String - The name of the module that the primary record is from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
+    //      $module_id - String - The ID of the bean in the specified module
+    //      $link_field_name - String - name of the link field which relates to the other module for which the relationship needs to be generated.
+    //      $relatedIDs - Array - array of related record ids for which relationships needs to be generated.
+    //      $name_value_list - Array - The keys of the array are the SugarBean attributes, the values of the array are the values the attributes should have.
+    //      $deleted - Boolean - Optional, if the value 0 or nothing is passed then it will add the relationship for related_ids and if 1 is passed, it will delete this relationship for related_ids
+    // return result object
+    //      created - integer - How many relationships has been created
+    //      failed - integer - How many relationsip creation failed
+    //      deleted - integer - How many relationships were deleted
     //
     public function SetRelationship($sessionID, $module_name, $module_id, $link_field_name, $relatedIDs = array(), $name_value_list = array(), $delete = false ) {
 
@@ -258,6 +347,18 @@ class SugarRESTBean
     //
     // SetRelationships
     // Sets multiple relationships between two SugarBeans 
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $module_names - Array - Array of the name of the module that the primary record is from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
+    //      $module_ids - Array - The array of ID of the bean in the specified module_name
+    //      $link_field_names - Array - Array of the name of the link field which relates to the other module for which the relationships needs to be generated.
+    //      $relatedIDs - Array - array of related record ids for which relationships needs to be generated.
+    //      $name_value_lists - Array - Array of Array. The keys of the inner array are the SugarBean attributes, the values of the inner array are the values the attributes should have.
+    //      $deleted - Boolean - Optional, if the value 0 or nothing is passed then it will add the relationship for related_ids and if 1 is passed, it will delete this relationship for related_ids
+    // return result object
+    //      created - integer - How many relationships has been created
+    //      failed - integer - How many relationsip creation failed
+    //      deleted - integer - How many relationships were deleted
     //
     public function SetRelationships($sessionID, $module_names = array(), $module_ids = array(), $link_field_names = array(), $relatedIDs = array(), $name_value_list = array(), $delete = false) {
 
@@ -280,6 +381,12 @@ class SugarRESTBean
     //
     // GetQuotePDF
     // Get the base64 contents of a quote pdf 
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $quote_id - String - ID of quote bean
+    //      $pdf_format - String - name of the output ex. 'Standard' or 'Invoice'
+    // return result object
+    //      return base64 content pdf file
     //
     public function GetQuotePDF($sessionID, $quote_id, $pdf_format = 'Standard') {
 
@@ -298,6 +405,11 @@ class SugarRESTBean
     //
     // GetReportPDF
     // Get the base64 contents of a report pdf 
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $report_id - String - ID of report bean
+    // return result object
+    //      return base64 content pdf file
     //
     public function GetReportPDF($sessionID, $report_id) {
 
@@ -315,6 +427,13 @@ class SugarRESTBean
     //
     // GetReportEntries
     // Retrieve a list of Reports info based on provided IDs.
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $ids - Array - An array of Report IDs
+    //      $select_fields - String - A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
+    // return result object
+    //      'field_list' -- Array of Var def information about the returned fields
+    //      'entry_list' -- Array of the records that were retrieved
     //
     public function GetReportEntries($sessionID, $ids, $select_fields = "") {
 
@@ -333,6 +452,15 @@ class SugarRESTBean
     //
     // GetNoteAttachment
     // Retrieve an attachment from a note
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $note_id - String - The ID of the appropriate Note
+    // return result object
+    //      'id' -- The ID of the Note containing the attachment
+    //      'filename' -- The file name of the attachment
+    //      'file' -- The binary contents of the file.
+    //      'related_module_id' -- module id to which this note is related
+    //      'related_module_name' - module name to which this note is related
     //
     public function GetNoteAttachment($sessionID, $note_id) {
 
@@ -351,12 +479,21 @@ class SugarRESTBean
     // SetNoteAttachment
     // Add or replace the attachment on a Note.
     // Optionally you can set the relationship of this note to Accounts/Contacts and so on by setting related_module_id, related_module_name
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $the _note - Array - Array of Note information
+    // return result object
+    //      'id' -- The ID of the Note 
     //
     public function SetNoteAttachment($sessionID, $the_note = array()) {
 
         $entry_parameters = array(
             "session"=> $sessionID,
-            "note" => $the_note
+            "note" => $note_id,
+            "filename" => $filename,
+            "file" => $file,
+            "related_module_id" => $related_module_id,
+            "related_module_name" => $related_module_name
         );
         $param_encode = json_encode($entry_parameters) ;
 
@@ -369,6 +506,15 @@ class SugarRESTBean
     // GetDocumentRevision
     // This method is used as a result of the .htaccess lock down on the cache directory. It will allow a
     // properly authenticated user to download a document that they have proper rights to download.
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $doc_id - String - The ID of the appropriate Note
+    // return result object
+    //      'id' -- The ID of the Note 
+    //      'document_name' -- name of the document
+    //      'revision' - The revision value for this revision
+    //      'filename' -- The file name of the attachment
+    //      'file' -- The binary contents of the file.
     //
     public function GetDocumentRevision($sessionID, $doc_id) {
 
@@ -386,6 +532,11 @@ class SugarRESTBean
     //
     // SetDocumentRevision
     // sets a new revision for this document
+    // Parameters :
+    //      $sessionID - String - Session ID returned by a previous call to login.
+    //      $document_revision - Array - Array of document revision information
+    // return result object
+    //      'id' -- The ID of the Note 
     //
     public function SetDocumentRevision($sessionID, $document_revision = array()) {
 
