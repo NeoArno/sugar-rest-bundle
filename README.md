@@ -54,6 +54,7 @@ the api_version parameter isreserved for a futur use
 
 ##Documentation
 
-Coming soon ... ;-)
+Retrieve documentation on my website :
+http://blog.neoarno.com/2013/08/sugarrest-bundle-documentation/
 
 
