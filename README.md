@@ -55,6 +55,6 @@ the api_version parameter isreserved for a futur use
 ##Documentation
 
 Retrieve documentation on my website :
-http://blog.neoarno.com/2013/08/sugarrest-bundle-documentation/
+http://blog.neoarno.com/wp-content/uploads/2013/08/SugarCRMRESTBundle-DevDoc-0.2.pdf
 
 
