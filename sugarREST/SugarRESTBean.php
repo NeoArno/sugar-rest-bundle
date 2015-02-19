@@ -3,7 +3,7 @@ namespace NeoArno\sugarRESTBundle\SugarREST ;
 
 use NeoArno\sugarRESTBundle\SugarREST\SugarRESTResult;
 use NeoArno\sugarRESTBundle\SugarREST\SugarRESTCall;
-
+ 
 class SugarRESTBean
 {
     //curl object
