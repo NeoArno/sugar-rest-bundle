@@ -1,38 +1,39 @@
 <?php
-namespace NeoArno\sugarRESTBundle\SugarREST ;
+namespace NeoArno\sugarRESTBundle\SugarREST;
 
 use NeoArno\sugarRESTBundle\SugarREST\SugarRESTResult;
 use Lsw\ApiCallerBundle\Call\HttpPostJson;
+use SoapFault;
 
 class SugarRESTCall
 {
     private $ApiVersion ;
     private $RESTurl ;
-    
+
     private $rest_error ;
     private $rest_response ;
     private $rest_result ;
-    
+
     private $curl_session ;
-    
+
     private $rest_options ;
 
-        
+
     public function __construct ($curl_req, $Url, $ApiVersion) {
-        
+
         $this->ApiVersion = $ApiVersion ;
         $this->RESTurl = $Url ;
         $this->rest_error = "";
         $this->rest_response = "";
-        
-        
+
+
         $this->rest_options =  array(
             'CURLOPT_NOBODY'=> TRUE,
         );
-        
+
         $this->curl_session = $curl_req ;
     }
-      
+
     public function call ($method, $obj_parameter)
     {
         $post_parameters = array(
@@ -45,10 +46,10 @@ class SugarRESTCall
         try {
             $result_call = $this->curl_session->call(new HttpPostJson($this->RESTurl, $post_parameters));
             $this->rest_result = new SugarRESTResult($result_call);
-        } 
+        }
         catch (SoapFault $err) {
             $this->rest_result = new SugarRESTResult();
-            $this->rest_result->setError($err->code , $err->message, $err->message);
+            $this->rest_result->setError($err->getCode() , $err->getMessage(), $err->getMessage());
         }
         return($this->rest_result);
     }
@@ -71,14 +72,14 @@ class SugarRESTCall
                 $this->rest_result = new SugarRESTResult();
                 $this->rest_result->setError(1, "Not Connected", "Not Connected");
             }
-        } 
+        }
         catch (SoapFault $err) {
             $this->rest_result = new SugarRESTResult();
-            $this->rest_result->setError($err->code , $err->message, $err->message);
+            $this->rest_result->setError($err->getCode() , $err->getMessage(), $err->getMessage());
         }
         return($this->rest_result);
     }
-    
+
     public function getResult () {
         return($this->rest_result);
     }
@@ -86,7 +87,7 @@ class SugarRESTCall
     public function getApiVersion () {
         return($this->ApiVersion);
     }
-    
+
 }
 
 

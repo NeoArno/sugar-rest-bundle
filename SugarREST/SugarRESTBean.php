@@ -1,16 +1,16 @@
 <?php
-namespace NeoArno\sugarRESTBundle\SugarREST ;
+namespace NeoArno\sugarRESTBundle\SugarREST;
 
 use NeoArno\sugarRESTBundle\SugarREST\SugarRESTResult;
 use NeoArno\sugarRESTBundle\SugarREST\SugarRESTCall;
- 
+
 class SugarRESTBean
 {
     //curl object
     private $rest_call ;
 
     public function __construct ($rest_call) {
-        
+
         $this->rest_call = $rest_call ;
     }
 
@@ -23,7 +23,7 @@ class SugarRESTBean
     //      $fields_list - Array - A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
     //      $link_name_to_fields_array - Array - A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
     //      $trackView - Boolean - Should we track the record accessed
-    // return result object 
+    // return result object
     //      return an array of each fields, values and relationships list
     //
     public function GetEntry($sessionID, $module_name, $obj_id, $fields_list = array(), $link_name_to_fields_array = array(), $track_view = FALSE) {
@@ -39,21 +39,21 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_entry", $param_encode);
-                    
+
         return ($result);
-        
+
     }
-    
+
     //
     // SetEntry
     // Update or create a single SugarBean
-    // 
+    //
     // Parameters :
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
     //      $name_value_list - Array - The keys of the array are the SugarBean attributes, the values of the array are the values the attributes should have.
     //      $trackView - Boolean - Should we track the record accessed
-    // return result object 
+    // return result object
     //      the ID of the bean that was written to (-1 on error)
     //
     public function SetEntry($sessionID, $module_name, $name_value_list = array(), $track_view = FALSE) {
@@ -67,9 +67,9 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("set_entry", $param_encode);
-                    
+
         return ($result);
-        
+
     }
 
     // GetEntries
@@ -80,7 +80,7 @@ class SugarRESTBean
     //      $IDs_array - Array - The SugarBeans' IDs array.
     //      $fields_list - Array - A list of the fields to be included in the results. This optional parameter allows for only needed fields to be retrieved.
     //      $link_name_to_fields_array - Array - A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
-    // return result object 
+    // return result object
     //      return an array of each fields, values and relationships list
     //
     public function GetEntries($sessionID, $module_name, $IDs_array, $fields_list = array(), $link_name_to_fields_array = array()) {
@@ -95,9 +95,9 @@ class SugarRESTBean
         $param_encode = json_encode($entries_parameters) ;
 
         $result = $this->rest_call->call("get_entries", $param_encode);
-                    
+
         return ($result);
-        
+
     }
 
     //
@@ -108,7 +108,7 @@ class SugarRESTBean
     //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
     //      $query - String - SQL where clause without the word 'where'
     //      $deleted - Boolean - specify whether or not to include deleted records
-    // return result object 
+    // return result object
     //      result_count - integer - Total number of records for a given module and query
     //
     public function GetEntriesCount($sessionID, $module_name, $query = "", $deleted = false) {
@@ -122,9 +122,9 @@ class SugarRESTBean
         $param_encode = json_encode($entries_parameters) ;
 
         $result = $this->rest_call->call("get_entries_count", $param_encode);
-                    
+
         return ($result);
-        
+
     }
 
     //
@@ -134,7 +134,7 @@ class SugarRESTBean
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $module_name - String - The name of the module to return records from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method).
     //      $name_value_list - Array - Array of Bean specific Arrays where the keys of the array are the SugarBean attributes, the values of the array are the values the attributes should have.
-    // return result object 
+    // return result object
     //      'ids' -- Array of the IDs of the beans that was written to (-1 on error)
     public function SetEntries($sessionID, $module_name, $name_value_lists = array()) {
 
@@ -146,11 +146,11 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("set_entries", $param_encode);
-                    
+
         return ($result);
-        
+
     }
-    
+
     //
     // GetListEntries
     // Retrieve a list of Beans answer to a specific request
@@ -164,7 +164,7 @@ class SugarRESTBean
     //      $link_name_to_fields_array - Array - A list of link_names and for each link_name, what fields value to be returned. For ex.'link_name_to_fields_array' => array(array('name' =>  'email_addresses', 'value' => array('id', 'email_address', 'opt_out', 'primary_address')))
     //      $max_results - Integer - The maximum number of records to return.  The default is the sugar configuration value for 'list_max_entries_per_page'
     //      $deleted - Boolean - false if deleted records should not be include, true if deleted records should be included
-    // return result object 
+    // return result object
     //      'result_count' -- integer - The number of records returned
     //      'next_offset' -- integer - The start of the next page (This will always be the previous offset plus the number of rows returned.  It does not indicate if there is additional data unless you calculate that the next_offset happens to be closer than it should be.
     //      'entry_list' -- Array - The records that were retrieved
@@ -187,9 +187,9 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_entry_list", $param_encode);
-                    
+
         return ($result);
-        
+
     }
 
     //
@@ -225,9 +225,9 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("search_by_module", $param_encode);
-                    
+
         return ($result);
-        
+
     }
 
     //
@@ -244,7 +244,7 @@ class SugarRESTBean
     //      $deleted - Boolean - false if deleted records should not be include, true if deleted records should be included
     //      $order_by - String - SQL order by clause without the phrase 'order by'
     //      $offset - Integer - The record offset to start from
-    //      $limit - Integer - number of results to return (defaults to all)    
+    //      $limit - Integer - number of results to return (defaults to all)
     // return result object
     //      'entry_list' -- Array - The records that were retrieved
     //      'relationship_list' -- Array - The records link field data.
@@ -268,8 +268,8 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_relationships", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
@@ -277,7 +277,7 @@ class SugarRESTBean
     // retrieve a collection of beans that are related to the specified bean and, optionnally, returns relationship data
     //
     // NOT WORKING FOR INSTANCE !!!!
-    // 
+    //
     public function GetModifiedRelationships($sessionID, $module_name, $related_module, $from_date = "1970-01-01 00:00:00", $to_date = "", $select_fields = array(), $relationship_name = "", $offset = 0, $max_results = -99, $deleted = 0, $module_user_id = "", $deletion_date = "") {
 
         // If no to_date specified so today
@@ -305,14 +305,14 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_modified_relationships", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
-    
-    
+
+
     //
     // SetRelationship
-    // Sets a single relationship between two SugarBeans 
+    // Sets a single relationship between two SugarBeans
     // Parameters :
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $module_name - String - The name of the module that the primary record is from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
@@ -340,13 +340,13 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("set_relationship", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
     // SetRelationships
-    // Sets multiple relationships between two SugarBeans 
+    // Sets multiple relationships between two SugarBeans
     // Parameters :
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $module_names - Array - Array of the name of the module that the primary record is from.  This name should be the name the module was developed under (changing a tab name is studio does not affect the name that should be passed into this method)..
@@ -374,13 +374,13 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("set_relationships", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
     // GetQuotePDF
-    // Get the base64 contents of a quote pdf 
+    // Get the base64 contents of a quote pdf
     // Parameters :
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $quote_id - String - ID of quote bean
@@ -398,13 +398,13 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_quotes_pdf", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
     // GetReportPDF
-    // Get the base64 contents of a report pdf 
+    // Get the base64 contents of a report pdf
     // Parameters :
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $report_id - String - ID of report bean
@@ -420,8 +420,8 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_report_pdf", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
@@ -445,8 +445,8 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_report_entries", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
@@ -471,8 +471,8 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_note_attachment", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
@@ -483,7 +483,7 @@ class SugarRESTBean
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $the _note - Array - Array of Note information
     // return result object
-    //      'id' -- The ID of the Note 
+    //      'id' -- The ID of the Note
     //
     public function SetNoteAttachment($sessionID, $the_note = array()) {
 
@@ -498,8 +498,8 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("set_note_attachment", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
@@ -510,7 +510,7 @@ class SugarRESTBean
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $doc_id - String - The ID of the appropriate Note
     // return result object
-    //      'id' -- The ID of the Note 
+    //      'id' -- The ID of the Note
     //      'document_name' -- name of the document
     //      'revision' - The revision value for this revision
     //      'filename' -- The file name of the attachment
@@ -525,8 +525,8 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("get_document_revision", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
 
     //
@@ -536,7 +536,7 @@ class SugarRESTBean
     //      $sessionID - String - Session ID returned by a previous call to login.
     //      $document_revision - Array - Array of document revision information
     // return result object
-    //      'id' -- The ID of the Note 
+    //      'id' -- The ID of the Note
     //
     public function SetDocumentRevision($sessionID, $document_revision = array()) {
 
@@ -547,10 +547,10 @@ class SugarRESTBean
         $param_encode = json_encode($entry_parameters) ;
 
         $result = $this->rest_call->call("set_document_revision", $param_encode);
-                    
-        return ($result);        
+
+        return ($result);
     }
-    
+
 }
 
 
