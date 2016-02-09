@@ -3,6 +3,7 @@ namespace NeoArno\sugarRESTBundle\SugarREST;
 
 use NeoArno\sugarRESTBundle\SugarREST\SugarRESTResult;
 use Lsw\ApiCallerBundle\Call\HttpPostJson;
+use SoapFault;
 
 class SugarRESTCall
 {
@@ -48,7 +49,7 @@ class SugarRESTCall
         }
         catch (SoapFault $err) {
             $this->rest_result = new SugarRESTResult();
-            $this->rest_result->setError($err->code , $err->message, $err->message);
+            $this->rest_result->setError($err->getCode() , $err->getMessage(), $err->getMessage());
         }
         return($this->rest_result);
     }
@@ -74,7 +75,7 @@ class SugarRESTCall
         }
         catch (SoapFault $err) {
             $this->rest_result = new SugarRESTResult();
-            $this->rest_result->setError($err->code , $err->message, $err->message);
+            $this->rest_result->setError($err->getCode() , $err->getMessage(), $err->getMessage());
         }
         return($this->rest_result);
     }
