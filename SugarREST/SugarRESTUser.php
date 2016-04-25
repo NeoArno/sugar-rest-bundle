@@ -22,10 +22,12 @@ class SugarRESTUser
     //      $password - String - password associated to the user.
     //      $language - String - language code for this user ("en_US" by default).
     //      $notifyonsave - Bool - generate an email notification when a record is saved
+    //      $ldapauth - Bool - true if you use LDAP for authentification
+    //      $ldapencryptionkey - String - key for LDAP encrypt from SugarCRM
     // return result object
     //      return the sessionID and an array of information on connected user
     //
-    public function Connect($user, $password, $language ="en_US", $notifyonsave = false)
+    public function Connect($user, $password, $language ="en_US", $notifyonsave = false, $ldapauth = false, $ldapencryptionkey = "")
     {
         $login_parameters = array(
             "user_auth"=>array(
@@ -41,8 +43,14 @@ class SugarRESTUser
                           "value" => $notifyonsave),
             ),
         );
+        if($ldapauth == true){
+            $ldapencryptionkey = substr(md5($ldapencryptionkey),0,24);
+            $iv = 'password'; // just a "password" string
+            $login_parameters["user_auth"]["password"] = bin2hex(mcrypt_cbc(MCRYPT_3DES, $ldapencryptionkey, $password, MCRYPT_ENCRYPT, $iv));
+        }
+        
         $param_encode = json_encode($login_parameters) ;
-
+        
         $result = $this->rest_call->call("login", $param_encode);
 
         return ($result);
